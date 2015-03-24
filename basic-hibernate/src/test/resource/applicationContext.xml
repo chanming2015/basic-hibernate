@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- 打开Spring的Annotation支持 -->
+	<context:annotation-config />
+	<!-- 配置了一个c3p0数据库连接池 -->
+	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"	destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@192.168.16.187:1521:orc1" />
+		<property name="username" value="tq" />
+		<property name="password" value="123" />
+		<!-- 配置连接池的初始值 -->
+		<property name="initialSize" value="1" />
+		<!-- 连接池的最大值 -->
+		<!-- <property name="maxActive" value="500"/> -->
+		<!-- 最大空闲时，当经过一个高峰之后，连接池可以将一些用不到的连接释放，一直减少到maxIdle为止 -->
+		<!-- <property name="maxIdle" value="2"/> -->
+		<!-- 当最小空闲时，当连接少于minIdle时会自动去申请一些连接 -->
+		<property name="minIdle" value="1" />
+		<property name="maxActive" value="100" />
+		<property name="maxIdle" value="20" />
+		<property name="maxWait" value="1000" />
+	</bean>
+
+	<!-- Hibernate的SessionFactory类 -->
+	<bean id="mySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="myDataSource" />
+		<!-- 设置Spring取那个包中查找相应的实体类 -->
+		<property name="packagesToScan">
+			<value>com.dyr.xms.test.model</value>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.c3p0.min_size">5</prop>
+				<prop key="hibernate.c3p0.max_size">10</prop>
+				<prop key="hibernate.c3p0.timeout">1800</prop>
+				<prop key="hibernate.c3p0.max_statements">50</prop>
+				<!-- <prop key="current_session_context_class">thread</prop> -->
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 数据访问层 -->
+	<bean id="baseDAO" class="com.dyr.xms.test.dao.BaseDAO">
+		<property name="sessionFactory" ref="mySessionFactory" />
+	</bean>
+
+	<!-- similarly, don't forget the PlatformTransactionManager -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="myDataSource" />
+	</bean>
+
+	<!-- the transactional advice (what 'happens'; see the <aop:advisor/> bean 
+		below) -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<!-- the transactional semantics... -->
+		<tx:attributes>
+			<!-- all methods starting with 'get' are read-only -->
+			<tx:method name="get*" read-only="true" />
+			<!-- other methods use the REQUIRED transaction settings (see below) -->
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- ensure that the above transactional advice runs for any execution of 
+		an operation defined by the FooService interface -->
+	<aop:config>
+		<aop:pointcut id="allService"
+			expression="execution(* com.dyr.xms.test.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allService" />
+	</aop:config>
+
+</beans>

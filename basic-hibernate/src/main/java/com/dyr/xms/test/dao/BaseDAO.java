@@ -7,7 +7,8 @@
  */
 package com.dyr.xms.test.dao;
 
-import org.hibernate.Session;
+import javax.inject.Inject;
+
 import org.hibernate.SessionFactory;
 
 /**
@@ -17,17 +18,17 @@ import org.hibernate.SessionFactory;
  * Comments:
  * JDK Version:
  * Author XuMaoSen
- * Create Date:2015-3-23 下午5:57:25
+ * Create Date:2015-3-24 下午4:00:17
  * Modified By:XuMaoSen
  * Modified Time:
  * What is Modified:
  * Description:
  * Version:
  */
-public abstract class BaseDAO {
-	
-	private SessionFactory sessionFactory;
+public class BaseDAO<T> implements IBaseDAO<T>{
 
+	@Inject
+	private SessionFactory sessionFactory;
 	/**
 	 * Author XuMaoSen
 	 * @return the sessionFactory
@@ -44,7 +45,24 @@ public abstract class BaseDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
-	public Session getCurrentSession(){
-		return sessionFactory.getCurrentSession();
+	@Override
+	public T insert(T t) {
+		
+		return null;
 	}
+
+	@Override
+	public void delete(T t) {
+	}
+
+	@Override
+	public T select(Integer id) {
+		
+		return null;
+	}
+
+	@Override
+	public void update(T t) {
+	}
+
 }
