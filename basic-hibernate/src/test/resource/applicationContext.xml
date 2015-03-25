@@ -14,7 +14,8 @@
 	<!-- 打开Spring的Annotation支持 -->
 	<context:annotation-config />
 	<!-- 配置了一个c3p0数据库连接池 -->
-	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"	destroy-method="close">
+	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url" value="jdbc:oracle:thin:@192.168.16.187:1521:orc1" />
 		<property name="username" value="tq" />
@@ -33,7 +34,8 @@
 	</bean>
 
 	<!-- Hibernate的SessionFactory类 -->
-	<bean id="mySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	<bean id="mySessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="myDataSource" />
 		<!-- 设置Spring取那个包中查找相应的实体类 -->
 		<property name="packagesToScan">
@@ -52,11 +54,6 @@
 				<prop key="hibernate.cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</prop>
 			</props>
 		</property>
-	</bean>
-
-	<!-- 数据访问层 -->
-	<bean id="baseDAO" class="com.dyr.xms.test.dao.BaseDAO">
-		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 
 	<!-- similarly, don't forget the PlatformTransactionManager -->
