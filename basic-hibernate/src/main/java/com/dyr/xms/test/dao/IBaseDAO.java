@@ -29,7 +29,7 @@ public interface IBaseDAO<T> {
 	 * @author XuMaoSen
 	 * Create Time:2015-3-24 下午3:56:06
 	 * Description 增加
-	 * @param t
+	 * @param t为临时对象
 	 * @return
 	 */
 	public T insert(T t);
@@ -38,7 +38,7 @@ public interface IBaseDAO<T> {
 	 * @author XuMaoSen
 	 * Create Time:2015-3-24 下午3:56:06
 	 * Description 删除
-	 * @param t
+	 * @param t为持久态对象
 	 * @return
 	 */
 	public void delete(T t);
@@ -47,7 +47,7 @@ public interface IBaseDAO<T> {
 	 * @author XuMaoSen
 	 * Create Time:2015-3-24 下午3:56:06
 	 * Description 查询
-	 * @param t
+	 * @param id为要查询的数据的主键
 	 * @return
 	 */
 	public T select(Integer id);
@@ -56,7 +56,7 @@ public interface IBaseDAO<T> {
 	 * @author XuMaoSen
 	 * Create Time:2015-3-24 下午3:56:06
 	 * Description 修改
-	 * @param t
+	 * @param t为游离态的对象或持久态对象 
 	 * @return
 	 */
 	public void update(T t);

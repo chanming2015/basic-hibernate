@@ -2,19 +2,24 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+         http://www.springframework.org/schema/tx 
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 	<!-- 打开Spring的Annotation支持 -->
 	<context:annotation-config />
+	<!-- 设定Spring 去哪些包中找Annotation -->
+	<context:component-scan base-package="com.dyr" />
+	
 	<!-- 配置了一个c3p0数据库连接池 -->
-	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url" value="jdbc:oracle:thin:@192.168.16.187:1521:orc1" />
@@ -36,7 +41,7 @@
 	<!-- Hibernate的SessionFactory类 -->
 	<bean id="mySessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="myDataSource" />
+		<property name="dataSource" ref="dataSource" />
 		<!-- 设置Spring取那个包中查找相应的实体类 -->
 		<property name="packagesToScan">
 			<value>com.dyr.xms.test.model</value>
@@ -46,10 +51,6 @@
 				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.c3p0.min_size">5</prop>
-				<prop key="hibernate.c3p0.max_size">10</prop>
-				<prop key="hibernate.c3p0.timeout">1800</prop>
-				<prop key="hibernate.c3p0.max_statements">50</prop>
 				<!-- <prop key="current_session_context_class">thread</prop> -->
 				<prop key="hibernate.cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</prop>
 			</props>
@@ -59,7 +60,7 @@
 	<!-- similarly, don't forget the PlatformTransactionManager -->
 	<bean id="txManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="myDataSource" />
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 	<!-- the transactional advice (what 'happens'; see the <aop:advisor/> bean 

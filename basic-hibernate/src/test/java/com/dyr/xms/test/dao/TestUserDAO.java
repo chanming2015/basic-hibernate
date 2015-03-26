@@ -12,6 +12,9 @@ import java.sql.SQLException;
 import javax.inject.Inject;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.operation.DatabaseOperation;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -55,6 +58,7 @@ public class TestUserDAO extends AbstractDbUnitTestCase{
 	private SessionFactory sessionFactory;
 	@Inject
 	private IUserDAO userDAO;
+	
 	@Before
 	public void setUp() throws DataSetException, IOException, SQLException{
 		//获取当前session
@@ -66,9 +70,37 @@ public class TestUserDAO extends AbstractDbUnitTestCase{
 	}
 	
 	@Test
-	public void testUserDAO() {
+	public void testInsert() throws IOException, DatabaseUnitException, SQLException {
+		User user = new User(1, "aaa");
+		userDAO.insert(user);
+	}
+	
+	@Test(expected=ObjectNotFoundException.class)
+	public void testDelete() throws IOException, DatabaseUnitException, SQLException {
+		IDataSet ds = createDateSet("tb_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
+		User user = userDAO.select(9);
+//		System.out.println(user.getClass().getName());
+		if(user.getId()!=null){
+			userDAO.delete(user);
+		}
+	}
+	
+	@Test
+	public void testSelect() throws IOException, DatabaseUnitException, SQLException {
+		IDataSet ds = createDateSet("tb_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
 		User user = userDAO.select(1);
-		Assert.assertEquals(new User(1,"zs"), user);
+		Assert.assertEquals((Integer)1,user.getId());
+	}
+	
+	@Test
+	public void testUpdate() throws IOException, DatabaseUnitException, SQLException {
+		IDataSet ds = createDateSet("tb_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
+		User user = userDAO.select(1);
+		user.setUsername("sdfsdfsfd");
+		userDAO.update(user);
 	}
 	
 	@After

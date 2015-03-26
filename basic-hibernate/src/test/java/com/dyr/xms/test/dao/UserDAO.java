@@ -28,10 +28,4 @@ import com.dyr.xms.test.model.User;
 @Repository("userDAO")
 public class UserDAO extends BaseDAO<User> implements IUserDAO{
 
-	@Override
-	public User select(Integer id) {
-		Object obj = getSessionFactory().getCurrentSession().get(User.class, id);
-		
-		return obj==null?null:(User)obj;
-	}
 }
