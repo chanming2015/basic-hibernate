@@ -32,6 +32,7 @@ public class User {
 
 	private Integer id;
 	private String username;
+	private String pass;
 	/**
 	 * Author XuMaoSen
 	 * @return the id
@@ -61,6 +62,20 @@ public class User {
 	 */
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	/**
+	 * Author XuMaoSen
+	 * @return the pass
+	 */
+	public String getPass() {
+		return pass;
+	}
+	/**
+	 * Author XuMaoSen
+	 * @param pass the pass to set
+	 */
+	public void setPass(String pass) {
+		this.pass = pass;
 	}
 	/**
 	 * Project:basic-hibernate

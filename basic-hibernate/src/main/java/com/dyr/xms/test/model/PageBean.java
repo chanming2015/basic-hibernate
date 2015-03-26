@@ -25,65 +25,80 @@ import java.util.List;
  */
 public class PageBean {
 	
-	private int currentPage;
-	private int pageRows;
-	private int countPage;
-	private int countRows;
+	/**
+	 * 当前页码
+	 */
+	private Integer currentPage;
+	/**
+	 * 每页条数
+	 */
+	private Integer pageRows;
+	/**
+	 * 总页数
+	 */
+	private Long countPage;
+	/**
+	 * 总记录条数
+	 */
+	private Long countRows;
+	/**
+	 * 分页数据
+	 */
 	private List<?> dataList;
 	/**
 	 * Author XuMaoSen
 	 * @return the currentPage
 	 */
-	public int getCurrentPage() {
+	public Integer getCurrentPage() {
 		return currentPage;
 	}
 	/**
 	 * Author XuMaoSen
 	 * @param currentPage the currentPage to set
 	 */
-	public void setCurrentPage(int currentPage) {
+	public void setCurrentPage(Integer currentPage) {
 		this.currentPage = currentPage;
 	}
 	/**
 	 * Author XuMaoSen
 	 * @return the pageRows
 	 */
-	public int getPageRows() {
+	public Integer getPageRows() {
 		return pageRows;
 	}
 	/**
 	 * Author XuMaoSen
 	 * @param pageRows the pageRows to set
 	 */
-	public void setPageRows(int pageRows) {
+	public void setPageRows(Integer pageRows) {
 		this.pageRows = pageRows;
 	}
 	/**
 	 * Author XuMaoSen
 	 * @return the countPage
 	 */
-	public int getCountPage() {
+	public Long getCountPage() {
 		return countPage;
 	}
 	/**
 	 * Author XuMaoSen
 	 * @param countPage the countPage to set
 	 */
-	public void setCountPage() {
-		this.countPage = countRows % pageRows == 0 ? countRows / pageRows : countRows / pageRows + 1;
+	public void setCountPage(Long countPage) {
+		this.countPage = countPage;
 	}
 	/**
 	 * Author XuMaoSen
 	 * @return the countRows
 	 */
-	public int getCountRows() {
+	public Long getCountRows() {
 		return countRows;
 	}
 	/**
 	 * Author XuMaoSen
 	 * @param countRows the countRows to set
 	 */
-	public void setCountRows(int countRows) {
+	public void setCountRows(Long countRows) {
 		this.countRows = countRows;
 	}
 	/**

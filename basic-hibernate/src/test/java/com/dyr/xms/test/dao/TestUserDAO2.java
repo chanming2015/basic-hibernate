@@ -9,6 +9,9 @@ package com.dyr.xms.test.dao;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.DataSetException;
@@ -28,6 +31,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+import com.dyr.xms.test.model.PageBean;
 import com.dyr.xms.test.model.User;
 import com.dyr.xms.test.util.AbstractDbUnitTestCase;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
@@ -52,7 +56,7 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 @ContextConfiguration("/applicationContext.xml")
 //指定测试类之前要执行的操作：
 @TestExecutionListeners({DbUnitTestExecutionListener.class,DependencyInjectionTestExecutionListener.class})
-public class TestUserDAO extends AbstractDbUnitTestCase{
+public class TestUserDAO2 extends AbstractDbUnitTestCase{
 
 	@Inject
 	private SessionFactory sessionFactory;
@@ -70,37 +74,24 @@ public class TestUserDAO extends AbstractDbUnitTestCase{
 	}
 	
 	@Test
-	public void testInsert() throws IOException, DatabaseUnitException, SQLException {
-		User user = new User(1, "aaa");
-		userDAO.insert(user);
-	}
-	
-	@Test//(expected=ObjectNotFoundException.class)
-	public void testDelete() throws IOException, DatabaseUnitException, SQLException {
+	public void testList() throws IOException, DatabaseUnitException, SQLException {
 		IDataSet ds = createDateSet("tb_user");
 		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
-		User user = userDAO.select(1);
-//		System.out.println(user.getClass().getName());
-		if(user.getId()!=null){
-			userDAO.delete(user);
-		}
+		String hql = "from User u where u.id=? and u.username = :name";
+		Object[] args = new Object[]{1};
+		Map<String , Object> alias = new HashMap<String, Object>();
+		alias.put("name", "admin1");
+		List<User> list = userDAO.list(hql, args, alias);
+		Assert.assertEquals("123", list.get(0).getPass());
 	}
 	
 	@Test
-	public void testSelect() throws IOException, DatabaseUnitException, SQLException {
+	public void testFind() throws IOException, DatabaseUnitException, SQLException{
 		IDataSet ds = createDateSet("tb_user");
 		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
-		User user = userDAO.select(1);
-		Assert.assertEquals((Integer)1,user.getId());
-	}
-	
-	@Test
-	public void testUpdate() throws IOException, DatabaseUnitException, SQLException {
-		IDataSet ds = createDateSet("tb_user");
-		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
-		User user = userDAO.select(1);
-		user.setUsername("sdfsdfsfd");
-		userDAO.update(user);
+		String hql = "from User";
+		PageBean pageBean = userDAO.find(hql, null, null);
+		Assert.assertEquals(10, pageBean.getDataList().size());
 	}
 	
 	@After
