@@ -264,5 +264,30 @@ public class BaseDAO<T> implements IBaseDAO<T>{
 		pageBean.setCountRows(total);
 		return pageBean;
 	}
+	
+	/**
+	 * 查询单个对象
+	 */
+	public Object queryObject(String hql, Object[] args, Map<String, Object>alias ){
+		Query query = getCurrentSession().createQuery(hql);
+		//设置参数
+		setAliasParameter(query, alias);
+		setParameter(query, args);
+		return query.uniqueResult();
+	}
+	
+	public void updateByHQL(String hql, Object[] args){
+		Query query = getCurrentSession().createQuery(hql);
+		setParameter(query, args);
+		query.executeUpdate();
+	}
+	
+	public void updateByHQL(String hql, Object arg){
+		this.updateByHQL(hql, (Object[])arg);
+	}
+	
+	public void updateByHQL(String hql){
+		this.updateByHQL(hql, null);
+	}
 
 }
