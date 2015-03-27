@@ -26,19 +26,19 @@ public class SystemContext {
 	/**
 	 * 每页条数
 	 */
-	private static ThreadLocal<Integer> pageSize = new ThreadLocal<Integer>();
+	private static ThreadLocal<Integer> pageRows = new ThreadLocal<Integer>();
 	/**
-	 * 当前页码
+	 * 显示开始位置(从..开始显示)
 	 */
 	private static ThreadLocal<Integer> pageOffset = new ThreadLocal<Integer>();
 	/**
 	 * 排序方式
 	 */
-	private static ThreadLocal<String> sort  = new ThreadLocal<String>();
+	private static ThreadLocal<String> sortWays  = new ThreadLocal<String>();
 	/**
 	 * 排序的字段
 	 */
-	private static ThreadLocal<String> order  = new ThreadLocal<String>();
+	private static ThreadLocal<String> orderKey  = new ThreadLocal<String>();
 	/**
 	 * 真实路径
 	 */
@@ -51,15 +51,15 @@ public class SystemContext {
 	 * Author XuMaoSen
 	 * @return the pageSize
 	 */
-	public static Integer getPageSize() {
-		return pageSize.get();
+	public static Integer getPageRows() {
+		return pageRows.get();
 	}
 	/**
 	 * Author XuMaoSen
 	 * @param pageSize the pageSize to set
 	 */
-	public static void setPageSize(Integer pageSize) {
-		SystemContext.pageSize.set(pageSize);
+	public static void setPageRows(Integer pageRows) {
+		SystemContext.pageRows.set(pageRows);
 	}
 	/**
 	 * Author XuMaoSen
@@ -71,6 +71,7 @@ public class SystemContext {
 	/**
 	 * Author XuMaoSen
 	 * @param pageOffset the pageOffset to set
+	 * 显示开始位置(从..之后开始显示)
 	 */
 	public static void setPageOffset(Integer pageOffset) {
 		SystemContext.pageOffset.set(pageOffset);
@@ -79,29 +80,29 @@ public class SystemContext {
 	 * Author XuMaoSen
 	 * @return 得到排序方式
 	 */
-	public static String getSort() {
-		return sort.get();
+	public static String getSortWays() {
+		return sortWays.get();
 	}
 	/**
 	 * Author XuMaoSen
 	 * @param sort the sort to set
 	 */
-	public static void setSort(String sort) {
-		SystemContext.sort.set(sort);
+	public static void setSortWays(String sortWays) {
+		SystemContext.sortWays.set(sortWays);
 	}
 	/**
 	 * Author XuMaoSen
 	 * @return 得到排序的字段
 	 */
-	public static String getOrder() {
-		return order.get();
+	public static String getOrderKey() {
+		return orderKey.get();
 	}
 	/**
 	 * Author XuMaoSen
-	 * @param order the order to set
+	 * @param orderKey the order to set
 	 */
-	public static void setOrder(String order) {
-		SystemContext.order.set(order);
+	public static void setOrderKey(String orderKey) {
+		SystemContext.orderKey.set(orderKey);
 	}
 	/**
 	 * Author XuMaoSen
@@ -121,14 +122,14 @@ public class SystemContext {
 	/**
 	 * 定义删除系统变量
 	 */
-	public static void removePageSize(){
-		pageSize.remove();
+	public static void removePageRows(){
+		pageRows.remove();
 	}
 	public static void removePageOffset(){
 		pageOffset.remove();
 	}
-	public static void removeOrder(){
-		order.remove();
+	public static void removeOrderKey(){
+		orderKey.remove();
 	}
 	public static void removeRealPath(){
 		realPath.remove();

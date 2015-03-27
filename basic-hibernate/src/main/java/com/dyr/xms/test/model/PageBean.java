@@ -20,15 +20,15 @@ import java.util.List;
  * Modified By:XuMaoSen
  * Modified Time:
  * What is Modified:
- * Description:
+ * Description: 适用于hibernate的分页对象
  * Version:
  */
 public class PageBean {
 	
 	/**
-	 * 当前页码
+	 * 显示开始位置(从..之后开始显示)
 	 */
-	private Integer currentPage;
+	private Integer pageOffset;
 	/**
 	 * 每页条数
 	 */
@@ -49,15 +49,15 @@ public class PageBean {
 	 * Author XuMaoSen
 	 * @return the currentPage
 	 */
-	public Integer getCurrentPage() {
-		return currentPage;
+	public Integer getPageOffset() {
+		return pageOffset;
 	}
 	/**
 	 * Author XuMaoSen
 	 * @param currentPage the currentPage to set
 	 */
-	public void setCurrentPage(Integer currentPage) {
-		this.currentPage = currentPage;
+	public void setPageOffset(Integer pageOffset) {
+		this.pageOffset = pageOffset;
 	}
 	/**
 	 * Author XuMaoSen

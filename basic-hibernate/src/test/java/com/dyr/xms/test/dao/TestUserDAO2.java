@@ -32,6 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import com.dyr.xms.test.model.PageBean;
+import com.dyr.xms.test.model.SystemContext;
 import com.dyr.xms.test.model.User;
 import com.dyr.xms.test.util.AbstractDbUnitTestCase;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
@@ -90,8 +91,14 @@ public class TestUserDAO2 extends AbstractDbUnitTestCase{
 		IDataSet ds = createDateSet("tb_user");
 		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
 		String hql = "from User";
+		SystemContext.setPageRows(4);
+		SystemContext.setPageOffset(0);
 		PageBean pageBean = userDAO.find(hql, null, null);
-		Assert.assertEquals(10, pageBean.getDataList().size());
+		Assert.assertEquals(4, pageBean.getDataList().size());
+		
+		SystemContext.setPageOffset(8);
+		PageBean pageBean2 = userDAO.find(hql, null, null);
+		Assert.assertEquals(2, pageBean2.getDataList().size());
 	}
 	
 	@After

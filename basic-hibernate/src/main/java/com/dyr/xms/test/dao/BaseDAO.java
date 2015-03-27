@@ -102,9 +102,9 @@ public class BaseDAO<T> implements IBaseDAO<T>{
 	 */
 	private String initSort(String hq1){
 		//排序方式
-		String order = SystemContext.getOrder();
+		String order = SystemContext.getOrderKey();
 		//排序方式
-		String sort = SystemContext.getSort();
+		String sort = SystemContext.getSortWays();
 		if(sort != null&& !"".equals(sort.trim())){
 			hq1 += " order by " + sort;
 			if("desc".equals(order)){
@@ -125,6 +125,7 @@ public class BaseDAO<T> implements IBaseDAO<T>{
 	@SuppressWarnings("rawtypes")
 	private void setAliasParameter(Query query, Map<String, Object>alias){
 		if(alias != null){
+			
 			Set<String> keys = alias.keySet();
 			for (String key : keys) {
 				Object obj = alias.get(key);
@@ -205,18 +206,18 @@ public class BaseDAO<T> implements IBaseDAO<T>{
 	 * @param pager	：分页参数
 	 */
 	private void setPageBean(Query query, PageBean pageBean){
-		Integer pageSize = SystemContext.getPageSize();
+		Integer pageRows = SystemContext.getPageRows();
 		Integer pageOffset = SystemContext.getPageOffset();
 		if(pageOffset == null || pageOffset <0){
 			pageOffset = 0;
 		}
-		if(pageSize == null || pageSize <0){
-			pageSize = 0;
+		if(pageRows == null || pageRows <0){
+			pageRows = 0;
 		}
-		pageBean.setCurrentPage(pageOffset);
-		pageBean.setPageRows(pageSize);
+		pageBean.setPageOffset(pageOffset);
+		pageBean.setPageRows(pageRows);
 //		System.out.println(pageBean.getClass().getName());
-		query.setFirstResult(pageOffset).setMaxResults(pageSize);
+		query.setFirstResult(pageOffset).setMaxResults(pageRows);
 	}
 	
 	/**
