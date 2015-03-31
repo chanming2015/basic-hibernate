@@ -7,7 +7,7 @@
 		<groupId>com.dyr.xms.test</groupId>
 		<artifactId>eLearning-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../eLLearning-parent/eLearning-parent/pom.xml</relativePath>
+		<relativePath>../eLearning-parent/pom.xml</relativePath>
 	</parent>
 
 	<artifactId>basic-hibernate</artifactId>
@@ -95,18 +95,5 @@
 			<artifactId>aspectjweaver</artifactId>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<!-- 项目插件管理 -->
-		<pluginManagement>
-			<plugins>
-				<!-- 利用maven-compiler-plugin插件设置项目编译环境为jre1.6 -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
 
 </project>
